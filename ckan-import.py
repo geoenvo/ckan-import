@@ -11,9 +11,6 @@ import argparse
 import requests
 
 
-CKAN_BASE_URL = 'https://psdbpn.duckdns.org/'
-CKAN_API_KEY = '7bb97a2d-57f0-4622-88ec-80013a23eb7a' # admin2 user
-
 #DATASET_DIRS = ['/path/to/datasets1', '/path/to/datasets2']
 #DATASET_DIRS = ['D:\path\to\datasets1', 'D:\path\to\datasets2']
 DEFAULT_EXTS_UPLOAD = ['.docx', '.xlsx', '.pptx', '.pdf', '.csv', '.zip']
