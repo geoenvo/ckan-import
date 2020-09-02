@@ -28,7 +28,7 @@ optional arguments:
                         Directory path(s) containing dataset files to import
   -e EXTS_UPLOAD [EXTS_UPLOAD ...], --exts-upload EXTS_UPLOAD [EXTS_UPLOAD ...]
                         File extensions to upload (defaults to: .docx .xlsx
-                        .pptx .pdf .csv .zip)
+                        .pptx .doc .xls .ppt .odt .ods .odp .pdf .csv .zip)
   -p PRIVATE, --private PRIVATE
                         Set the visibility of the datasets to private (True or
                         False, defaults to: True)
