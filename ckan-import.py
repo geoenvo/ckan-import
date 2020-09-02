@@ -13,7 +13,21 @@ import requests
 
 #DATASET_DIRS = ['/path/to/datasets1', '/path/to/datasets2']
 #DATASET_DIRS = ['D:\path\to\datasets1', 'D:\path\to\datasets2']
-DEFAULT_EXTS_UPLOAD = ['.docx', '.xlsx', '.pptx', '.pdf', '.csv', '.zip']
+DEFAULT_EXTS_UPLOAD = [
+    '.docx',
+    '.xlsx',
+    '.pptx',
+    '.doc',
+    '.xls',
+    '.ppt',
+    '.odt',
+    '.ods',
+    '.odp',
+    '.pdf',
+    '.csv',
+    '.zip'
+]
+VALID_PRIVATE = ['True', 'False']
 DEFAULT_PRIVATE = 'True'
 
 
@@ -126,10 +140,9 @@ if __name__ == '__main__':
         if not os.path.isdir(check_dataset_dir):
             print 'ERROR: invalid dataset directory path (got %s)' % check_dataset_dir
             sys.exit()
-    if dataset_private != 'True':
-        if dataset_private != 'False':
-            print 'ERROR: private must be True or False (got %s)' % dataset_private
-            sys.exit()
+    if dataset_private not in VALID_PRIVATE:
+        print 'ERROR: private must be True or False (got %s)' % dataset_private
+        sys.exit()
     #sys.exit(0)
     count_dataset_dirs = 0
     count_dataset_total = 0
