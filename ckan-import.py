@@ -106,10 +106,24 @@ def ckan_create_dataset(ckan_base_url, ckan_api_key, dataset_name, dataset_title
             error_message = return_message['error']['name'][0]
             return False, error_message
     else:
-         # status_code 409 = duplicate dataset name (url)
-         return_message = json.loads(response.content)
-         error_message = return_message['error']['name'][0]
-         return False, error_message
+        return_message = json.loads(response.content)
+        error_message = None
+        # error: api key not authorized
+        try:
+            error_message = return_message['error']['message']
+        except:
+            pass
+        # error: owner org does not exist
+        try:
+            error_message = return_message['error']['owner_org'][0]
+        except:
+            pass
+        # error: status_code 409 = duplicate dataset name (url)
+        try:
+            error_message = return_message['error']['name'][0]
+        except:
+            pass
+        return False, error_message
 
 
 if __name__ == '__main__':
