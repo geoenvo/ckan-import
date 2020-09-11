@@ -130,11 +130,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Import dataset files to CKAN',
         epilog='Refer to https://github.com/geoenvo/ckan-import for more details')
-    parser.add_argument('-c', '--ckan-base-url', help='The URL of the CKAN site (example: http://www.myckan.site/)', type=str, required=True)
+    parser.add_argument('-c', '--ckan-base-url', help='The URL of the CKAN site (example: http://myckan.site/)', type=str, required=True)
     parser.add_argument('-a', '--ckan-api-key', help='The CKAN API key (must have the permission to create datasets)', type=str, required=True)
     parser.add_argument('-d', '--dirs', help='Directory path(s) containing dataset files to import', type=str, nargs='+', required=True)
-    parser.add_argument('-e', '--exts-upload', help='File extensions to upload (defaults to: %s)' % ' '.join(DEFAULT_EXTS_UPLOAD), type=str, nargs='+', default=DEFAULT_EXTS_UPLOAD)
-    parser.add_argument('-p', '--private', help='Set the visibility of the datasets to private (True or False, defaults to: %s)' % DEFAULT_PRIVATE, type=str, default=DEFAULT_PRIVATE)
+    parser.add_argument('-e', '--exts-upload', help='File extensions to upload (defaults to: {})'.format(' '.join(DEFAULT_EXTS_UPLOAD)), type=str, nargs='+', default=DEFAULT_EXTS_UPLOAD)
+    parser.add_argument('-p', '--private', help='Set the visibility of the datasets to private (True or False, defaults to: {})'.format(DEFAULT_PRIVATE), type=str, default=DEFAULT_PRIVATE)
     parser.add_argument('-o', '--owner-org', help='The owner organization of the datasets', type=str, required=True)
     args = parser.parse_args()
     ckan_base_url = args.ckan_base_url
@@ -150,12 +150,14 @@ if __name__ == '__main__':
     #print(dataset_private)
     #print(dataset_owner_org)
     # check parameters first
+    if not ckan_base_url.endswith('/'):
+        ckan_base_url = '{}/'.format(ckan_base_url)
     for check_dataset_dir in dataset_dirs:
         if not os.path.isdir(check_dataset_dir):
-            print('ERROR: invalid dataset directory path (got %s)' % check_dataset_dir)
+            print('ERROR: invalid dataset directory path (got {})'.format(check_dataset_dir))
             sys.exit()
     if dataset_private not in VALID_PRIVATE:
-        print('ERROR: private must be True or False (got %s)' % dataset_private)
+        print('ERROR: private must be True or False (got {})'.format(dataset_private))
         sys.exit()
     #sys.exit(0)
     count_dataset_dirs = 0
@@ -163,7 +165,7 @@ if __name__ == '__main__':
     count_dataset_import_successful = 0
     count_dataset_import_failed = 0
     for dataset_dir in dataset_dirs:
-        print("Processing dataset directory: %s" % dataset_dir)
+        print('Processing dataset directory: {}'.format(dataset_dir))
         for root, dirs, files in os.walk(dataset_dir):
             for filename in files:
                 for ext in exts_upload:
@@ -176,16 +178,16 @@ if __name__ == '__main__':
                         dataset_name = get_dataset_name(dataset_title)
                         dataset_created, error_message = ckan_create_dataset(ckan_base_url, ckan_api_key, dataset_name, dataset_title, dataset_private, dataset_owner_org, filepath, filename)
                         if dataset_created:
-                            print('SUCCESS: imported dataset "%s"' % dataset_title)
+                            print('SUCCESS: imported dataset "{}"'.format(dataset_title))
                             count_dataset_import_successful += 1
                         else:
-                            print('FAILED: cannot import dataset "%s" (got error message "%s")' % (dataset_title, error_message))
+                            print('FAILED: cannot import dataset "{}" (got error message "{}")'.format(dataset_title, error_message))
                             count_dataset_import_failed += 1
                         count_dataset_total += 1
         count_dataset_dirs += 1
     print('SUMMARY')
-    print('Dataset directories processed\t: %d' % count_dataset_dirs)
-    print('Dataset imported\t\t: %d' % count_dataset_import_successful)
-    print('Dataset import failed\t\t: %d' % count_dataset_import_failed)
-    print('Dataset total\t\t\t: %d' % count_dataset_total)
+    print('Dataset directories processed\t: {}'.format(count_dataset_dirs))
+    print('Dataset imported\t\t: {}'.format(count_dataset_import_successful))
+    print('Dataset import failed\t\t: {}'.format(count_dataset_import_failed))
+    print('Dataset total\t\t\t: {}'.format(count_dataset_total))
     sys.exit(0)
