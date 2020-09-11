@@ -143,19 +143,19 @@ if __name__ == '__main__':
     exts_upload = args.exts_upload
     dataset_private = args.private
     dataset_owner_org = args.owner_org
-    #print ckan_base_url
-    #print ckan_api_key
-    #print dataset_dirs
-    #print exts_upload
-    #print dataset_private
-    #print dataset_owner_org
+    #print(ckan_base_url)
+    #print(ckan_api_key)
+    #print(dataset_dirs)
+    #print(exts_upload)
+    #print(dataset_private)
+    #print(dataset_owner_org)
     # check parameters first
     for check_dataset_dir in dataset_dirs:
         if not os.path.isdir(check_dataset_dir):
-            print 'ERROR: invalid dataset directory path (got %s)' % check_dataset_dir
+            print('ERROR: invalid dataset directory path (got %s)' % check_dataset_dir)
             sys.exit()
     if dataset_private not in VALID_PRIVATE:
-        print 'ERROR: private must be True or False (got %s)' % dataset_private
+        print('ERROR: private must be True or False (got %s)' % dataset_private)
         sys.exit()
     #sys.exit(0)
     count_dataset_dirs = 0
@@ -163,29 +163,29 @@ if __name__ == '__main__':
     count_dataset_import_successful = 0
     count_dataset_import_failed = 0
     for dataset_dir in dataset_dirs:
-        print "Processing dataset directory: %s" % dataset_dir
+        print("Processing dataset directory: %s" % dataset_dir)
         for root, dirs, files in os.walk(dataset_dir):
             for filename in files:
                 for ext in exts_upload:
                     if filename.lower().endswith(ext):
                         filepath = os.path.join(root, filename)
-                        #print filepath, filename
+                        #print(filepath, filename)
                         # get the dataset title from the filename without the extension part
                         dataset_title = filename.split('.')[0]
                         # dataset name max length is 100 chars only allows lowercase alpanumeric, -, and _
                         dataset_name = get_dataset_name(dataset_title)
                         dataset_created, error_message = ckan_create_dataset(ckan_base_url, ckan_api_key, dataset_name, dataset_title, dataset_private, dataset_owner_org, filepath, filename)
                         if dataset_created:
-                            print 'SUCCESS: imported dataset "%s"' % dataset_title
+                            print('SUCCESS: imported dataset "%s"' % dataset_title)
                             count_dataset_import_successful += 1
                         else:
-                            print 'FAILED: cannot import dataset "%s" (got error message "%s")' % (dataset_title, error_message)
+                            print('FAILED: cannot import dataset "%s" (got error message "%s")' % (dataset_title, error_message))
                             count_dataset_import_failed += 1
                         count_dataset_total += 1
         count_dataset_dirs += 1
-    print 'SUMMARY'
-    print 'Dataset directories processed\t: %d' % count_dataset_dirs
-    print 'Dataset imported\t\t: %d' % count_dataset_import_successful
-    print 'Dataset import failed\t\t: %d' % count_dataset_import_failed
-    print 'Dataset total\t\t\t: %d' % count_dataset_total
+    print('SUMMARY')
+    print('Dataset directories processed\t: %d' % count_dataset_dirs)
+    print('Dataset imported\t\t: %d' % count_dataset_import_successful)
+    print('Dataset import failed\t\t: %d' % count_dataset_import_failed)
+    print('Dataset total\t\t\t: %d' % count_dataset_total)
     sys.exit(0)
