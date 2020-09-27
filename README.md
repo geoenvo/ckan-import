@@ -9,7 +9,7 @@ Example below: import the private dataset files from the directory `d:\datasets`
 # ckan-import.py requires the Requests library
 pip install requirements.txt
 
-python ckan-import -h
+python ckan-import.py -h
 usage: ckan-import.py [-h] -c CKAN_BASE_URL -a CKAN_API_KEY -d DIRS [DIRS ...]
                       [-e EXTS_UPLOAD [EXTS_UPLOAD ...]] [-p PRIVATE] -o
                       OWNER_ORG
