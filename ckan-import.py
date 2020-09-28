@@ -90,7 +90,11 @@ def ckan_create_dataset(ckan_base_url, ckan_api_key, dataset_name, dataset_title
         resource_file = {
             'upload': open(resource_filepath, 'rb')
         }
-        response = requests.post(ckan_base_url + 'api/3/action/resource_create', headers=headers, data=resource_data, files=resource_file)
+        with open(resource_filepath, 'rb') as f:
+            resource_file = {
+                'upload': f
+            }
+            response = requests.post(ckan_base_url + 'api/3/action/resource_create', headers=headers, data=resource_data, files=resource_file)
         #assert response.status_code == requests.codes.ok
         if response.status_code == requests.codes.ok:
             response_dict = json.loads(response.content)
